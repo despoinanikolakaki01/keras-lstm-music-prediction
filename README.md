@@ -45,6 +45,9 @@ This is the best model I have found so far:
 ![LSTM Model Diagram](model_plot.png)
 Note: the number of outputs for the three final layers differ depending on what was detected during parsing of the files. For example, if you parse 100 midi files consisting of only three chords, the notes_output layer will only have three outputs. Thus, depending on what kind of music you're training on, the number of softmax neurons will change dynamically. 
 
+# Preprocessing & data extraction
+MIDI files were parsed using the Python library Music21 (symbolic music analysis — scores/notation rather than audio waveforms). From each MIDI we extract three time‑series: the note pitch, the note duration (quarter-length), and the offset (relative position inside the piece). Chords are detected and stored as dot‑separated pitch lists (e.g. "60.64.67"). Each of the three features (note, duration, offset) is represented as a list of strings and then converted to integer indices via three separate vocabularies (one per feature). Sequences of length N are prepared as input windows; the target is the next note/duration/offset that follows each window.
+The LSTM model is implemented with the Keras API (TensorFlow). For the experiments reported in the thesis the LSTM model was trained for 200 epochs on a dataset of 100+ classical piano pieces with batch size 64 and the Adam optimizer (learning rate 0.001). Variants including Bidirectional GRU and Bidirectional LSTM were also evaluated (trained for 100 epochs) but did not provide sufficiently lower loss in this setup.
 
 # Training 
 Everything in this repo can be run as-is to train on classical piano pieces:
