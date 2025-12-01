@@ -61,25 +61,12 @@ Change line 53 in train.py to specify where your .midi files are stored
 # TensorFlow 2.0
 To run with TensorFlow 2.0 use lstm-new-tf2.py
 
-# To Do
-I need to see what happens when the offset and duration problems are regression with MSE. Currently, we do classification of a library of classes (ie. unique offsets and durations) detected from the dataset during Midi parsing
-
-Enable multi-track training and prediction, currently we just merge all midi tracks into one
-Upload some more examples of music
-Try and experiment with smaller models that are quicker to train but still produce good results
-Try out some different loss functions, Adam seems best so far
-Maybe experiment with adding a genre classification network branch so the model doesn't need curated data as input
-Clean up the code, it's a bit messy in places
-
 # Changing instruments
 I hope to update the model to learn to predict the instrument, but at the moment I just use https://onlinesequencer.net/ if I want to hear it played by something other than a piano
 
 You can train the network on any instrument, all it cares about are the notes and their offset and duration. But, that said, the network will set each note's instrument as piano. This can be changed via lines 265 and 282 which set notes and chords to piano respectively in generate-music.py
 
-## Publishing this project
-
-- I plan to publish this repository without large datasets or pretrained weights. The `classical-piano` and `classical-piano-type0` folders should be downloaded separately or provided as a small sample in `samples/`.
-- Pretrained weights are not included. To reproduce the experiments, run `lstm-new-tf2.py` (200 epochs, batch size 64, Adam lr=0.001) to create weight files in `weights_maestro/`.
+To reproduce the experiments, run `lstm-new-tf2.py` (200 epochs, batch size 64, Adam lr=0.001) to create weight files in `weights_maestro/`.
 
 ### Quickstart (run minimal example)
 
@@ -105,7 +92,5 @@ python predict_with_prior_last.py
 
 ### Data
 
-Do NOT commit the full MAESTRO dataset into this repository. Download the MAESTRO dataset from the official source and place it under `data/maestro/` or `midis/` according to the scripts' expectations. See `convertmidis.py` for how to preprocess multi-track MIDI into a single-track format.
-
-If you have small example MIDI or audio samples, put them in `samples/` (these can be committed). Large model weights and audio should be uploaded as Releases or stored using Git LFS / external archive (Zenodo / Hugging Face / Google Drive) and linked from here.
+The model was trained using the MAESTRO dataset. Some of the audio results can be heard from the samples folder.
 
