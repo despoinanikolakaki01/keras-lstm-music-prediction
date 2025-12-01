@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+env/
+venv/
+ENV/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# OneDrive temp files
+~$*
+
+# Data, models and weights (do not commit large data or weights)
+data/
+datasets/
+midis/
+classical-piano/
+classical-piano-type0/
+GRU/
+weights_maestro/
+model_weights/
+*.h5
+*.hdf5
+*.ckpt
+*.pt
+*.pth
+
+# Audio samples (keep small examples only)
+samples/
