@@ -13,7 +13,6 @@ After reading Sigurður Skúli's towards data science article ['How to Generate 
 
 Sigurður's approach had some really nice and useful functions for parsing the data, creating dictionaries to translate between notes and class labels, and then using the trained model to generate pieces of music. 
 
-The main limitations of this work is that notes generated are all the same length and offset from one another, so music can sound quite unnatural sometimes. In this extension, we instead use the Keras Functional API (instead of a Sequential model) to branch the neural network to consider multiple timeseries from the music. They are:
 
 1. The Notes and Chords in the sequence (just referred to as 'notes' from here on)
 2. The offsets of the note from the previous one (offset of the note from the start of the midi minus the current base (previous value))
@@ -22,6 +21,23 @@ The main limitations of this work is that notes generated are all the same lengt
 The above also serve as three separate outputs to the network.
 
 Thus, three tasks are trained. Classifying the next note, its offset, and its duration.
+
+Prior-conditioned generation (this work vs. original):
+This repo adds a prior-conditioning mode to the original Keras-LSTM generator. The script predict_with_prior.py extracts a short real MIDI fragment (notes, offsets, durations) and use it as a seed "prior" that is prepended to the generated output. In practice, the predictor parses a chosen MIDI phrase and asks the trained LSTM to continue it — producing a continuation that is stylistically tied to the prior fragment. By contrast the original predict-tf2.py chooses a random seed from the training patterns and generates music from that seed without explicitly including a real prior. Notes:
+The prior script intentionally generates a longer continuation (700 notes in the version above) to show extended continuation behavior.
+Be sure the predictor's sequence_length matches the sequence length used at training time (mismatched sequence lengths will cause shape errors or incorrect behaviour). The training script lstm-new-tf2.py uses sequence_length = 100, so use predict_with_prior_last.py (which uses 100) when loading that model; predict_with_prior.py uses sequence_length = 20 and must match a model trained with that smaller window.
+Suggested small README additions (optional)
+
+Add a short example showing how to run prior-conditioned generation:
+Add a note about weights/data:
+“Prior-conditioned generation requires the same model weights used in training. If pretrained weights are not present, run python lstm-new-tf2.py to train (200 epochs, batch_size=64, Adam lr=0.001).”
+Would you like me to:
+
+A) Insert the above README paragraph into README.md and commit it, or
+B) Just give the text so you paste it yourself?
+If A, tell me whether to add it near the top or under the “Training” / “To Do” section.
+
+GPT-5 mini • 0x
 
 
 # Model Diagram
